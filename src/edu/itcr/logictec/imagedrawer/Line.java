@@ -1,5 +1,6 @@
 package edu.itcr.logictec.imagedrawer;
 
+import java.awt.Color;
 import java.awt.Graphics;
 
 
@@ -19,6 +20,8 @@ public class Line {
 	}
 	
 	public void drawLine(){
+		g.setColor(Color.blue);
 		g.drawLine(x1, y1, x2, y2);
+
 	}
 }

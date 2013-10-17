@@ -135,6 +135,10 @@ public class simulator extends JFrame {
 											0.0, 0.0, 0.0, Double.MIN_VALUE};
 		panel.setLayout(gbl_panel);
 		
+		final JPanel panel_1 = new JPanel();
+		panel_1.setBackground(Color.WHITE);
+		contentPane.add(panel_1, BorderLayout.CENTER);
+		
 		JLabel lblCompuertasLogicas = new JLabel("Compuertas logicas");
 		GridBagConstraints gbc_lblCompuertasLogicas = new GridBagConstraints();
 		gbc_lblCompuertasLogicas.fill = GridBagConstraints.BOTH;
@@ -143,17 +147,12 @@ public class simulator extends JFrame {
 		gbc_lblCompuertasLogicas.gridy = 0;
 		panel.add(lblCompuertasLogicas, gbc_lblCompuertasLogicas);
 		
-		final Canvas canvas = new Canvas();
-		canvas.setBackground(Color.WHITE);
-		canvas.setForeground(Color.WHITE);
-		contentPane.add(canvas, BorderLayout.CENTER);
-		
 		
 		JButton btnNewButton_8 = new JButton("AND");
 		btnNewButton_8.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Line linea = new Line(0,0,10,10,canvas.getGraphics());
-				repaint();
+				Line linea = new Line(0,0,400,300,panel_1.getGraphics());
+				linea.drawLine();
 			}
 		});
 		btnNewButton_8.setHorizontalAlignment(SwingConstants.LEFT);
