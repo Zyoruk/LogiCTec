@@ -9,12 +9,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
-import javax.swing.JSplitPane;
-import javax.swing.JTree;
-import javax.swing.JScrollPane;
-import java.awt.Component;
-import javax.swing.Box;
-import java.awt.Dimension;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.ImageIcon;
@@ -22,28 +16,29 @@ import javax.swing.SwingConstants;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Panel;
-import javax.swing.JMenuItem;
-import javax.swing.JInternalFrame;
 
-import java.awt.Graphics;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.JLabel;
 
 import edu.itcr.logictec.constants.Constants;
-import edu.itcr.logictec.imagedrawer.Line;
 
-import java.awt.Canvas;
 import java.awt.Color;
-import java.awt.Window.Type;
+import java.io.IOException;
+import javax.swing.JTextField;
 
 
 
 
-public class simulator extends JFrame {
+public class Simulator extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
+	private JTextField textMouseCoords;
 
 	/**
 	 * Launch the application.
@@ -52,8 +47,8 @@ public class simulator extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					simulator frame = new simulator();
-					frame.setVisible(true);
+					Simulator frame = new Simulator();
+					frame.setVisible(true);	
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -64,8 +59,7 @@ public class simulator extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public simulator() {
-		setTitle("LogiTEC");
+	public Simulator() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 600);
 		
@@ -73,12 +67,12 @@ public class simulator extends JFrame {
 		setJMenuBar(menuBar);
 		
 		JMenu mnAccesorios = new JMenu("Accesorios");
-		mnAccesorios.setIcon(new ImageIcon(simulator.class.getResource(
+		mnAccesorios.setIcon(new ImageIcon(Simulator.class.getResource(
 														Constants.menuGIF)));
 		menuBar.add(mnAccesorios);
 		
 		JButton btnAbrir = new JButton("Abrir");
-		btnAbrir.setIcon(new ImageIcon(simulator.class.getResource(
+		btnAbrir.setIcon(new ImageIcon(Simulator.class.getResource(
 													Constants.directoryGIF)));
 		btnAbrir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -93,7 +87,7 @@ public class simulator extends JFrame {
 				System.out.print("Esto tiene que guardar en un XML");
 			}
 		});
-		btnGuardar.setIcon(new ImageIcon(simulator.class.getResource(
+		btnGuardar.setIcon(new ImageIcon(Simulator.class.getResource(
 														Constants.floppyGIF)));
 		mnAccesorios.add(btnGuardar);
 		
@@ -107,7 +101,7 @@ public class simulator extends JFrame {
 		mnAccesorios.add(btnCrearTablaDe);
 		
 		JMenu mnAyuda = new JMenu("Ayuda");
-		mnAyuda.setIcon(new ImageIcon(simulator.class.getResource(
+		mnAyuda.setIcon(new ImageIcon(Simulator.class.getResource(
 							Constants.infoGIF)));
 		menuBar.add(mnAyuda);
 		
@@ -130,7 +124,7 @@ public class simulator extends JFrame {
 		GridBagLayout gbl_panel = new GridBagLayout();
 		gbl_panel.columnWidths = new int[]{129, 0};
 		gbl_panel.rowHeights = new int[]{19, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-		gbl_panel.columnWeights = new double[]{0.0, Double.MIN_VALUE};
+		gbl_panel.columnWeights = new double[]{1.0, Double.MIN_VALUE};
 		gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
 											0.0, 0.0, 0.0, Double.MIN_VALUE};
 		panel.setLayout(gbl_panel);
@@ -151,10 +145,16 @@ public class simulator extends JFrame {
 		JButton btnNewButton_8 = new JButton("AND");
 		btnNewButton_8.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Line linea = new Line(0,0,400,300,panel_1.getGraphics());
-				linea.drawLine();
+				PintaCompuerta pintaComp = new PintaCompuerta(0,0,100,"AND",
+										   panel_1);
+				try {
+					pintaComp.pintar();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
-		});
+			});
+
 		btnNewButton_8.setHorizontalAlignment(SwingConstants.LEFT);
 		GridBagConstraints gbc_btnNewButton_8 = new GridBagConstraints();
 		gbc_btnNewButton_8.fill = GridBagConstraints.HORIZONTAL;
@@ -167,9 +167,16 @@ public class simulator extends JFrame {
 		JButton btnNewButton_9 = new JButton("NAND");
 		btnNewButton_9.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				System.out.print("NAND");
+				PintaCompuerta pintaComp = new PintaCompuerta(110,0,100,"NAND",
+										   panel_1);
+				try {
+					pintaComp.pintar();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		});
+		
 		btnNewButton_9.setHorizontalAlignment(SwingConstants.LEFT);
 		GridBagConstraints gbc_btnNewButton_9 = new GridBagConstraints();
 		gbc_btnNewButton_9.fill = GridBagConstraints.HORIZONTAL;
@@ -181,10 +188,17 @@ public class simulator extends JFrame {
 		
 		JButton btnNewButton = new JButton("NOR");
 		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				System.out.print("NOR");
+			public void actionPerformed(ActionEvent arg0) {
+				PintaCompuerta pintaComp = new PintaCompuerta(220,0,100,"NOR",
+										   panel_1);
+				try {
+					pintaComp.pintar();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		});
+		
 		btnNewButton.setHorizontalAlignment(SwingConstants.LEFT);
 		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
 		gbc_btnNewButton.fill = GridBagConstraints.HORIZONTAL;
@@ -196,10 +210,17 @@ public class simulator extends JFrame {
 		
 		JButton btnNewButton_12 = new JButton("NOT");
 		btnNewButton_12.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				System.out.print("Not");
+			public void actionPerformed(ActionEvent arg0) {
+				PintaCompuerta pintaComp = new PintaCompuerta(340,0,100,"NOT",
+										   panel_1);
+				try {
+					pintaComp.pintar();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		});
+		
 		btnNewButton_12.setHorizontalAlignment(SwingConstants.LEFT);
 		GridBagConstraints gbc_btnNewButton_12 = new GridBagConstraints();
 		gbc_btnNewButton_12.fill = GridBagConstraints.HORIZONTAL;
@@ -211,10 +232,18 @@ public class simulator extends JFrame {
 		
 		JButton btnNewButton_13 = new JButton("OR");
 		btnNewButton_13.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				System.out.print("OR");
+			public void actionPerformed(ActionEvent arg0) {
+				PintaCompuerta pintaComp = new PintaCompuerta(0,110,100,"OR",
+										   panel_1);
+				try {
+					pintaComp.pintar();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		});
+		
+		
 		btnNewButton_13.setHorizontalAlignment(SwingConstants.LEFT);
 		GridBagConstraints gbc_btnNewButton_13 = new GridBagConstraints();
 		gbc_btnNewButton_13.fill = GridBagConstraints.HORIZONTAL;
@@ -226,10 +255,17 @@ public class simulator extends JFrame {
 		
 		JButton btnNewButton_11 = new JButton("XNOR");
 		btnNewButton_11.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				System.out.print("XNOR");
+			public void actionPerformed(ActionEvent arg0) {
+				PintaCompuerta pintaComp = new PintaCompuerta(110,110,100,"XNOR",
+						   				   panel_1);
+				try {
+					pintaComp.pintar();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		});
+		
 		btnNewButton_11.setHorizontalAlignment(SwingConstants.LEFT);
 		GridBagConstraints gbc_btnNewButton_11 = new GridBagConstraints();
 		gbc_btnNewButton_11.fill = GridBagConstraints.HORIZONTAL;
@@ -241,10 +277,17 @@ public class simulator extends JFrame {
 		
 		JButton btnNewButton_10 = new JButton("XOR");
 		btnNewButton_10.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				System.out.print("XOR");
+			public void actionPerformed(ActionEvent arg0) {
+				PintaCompuerta pintaComp = new PintaCompuerta(220,110,100,"XOR",
+										   panel_1);
+				try {
+					pintaComp.pintar();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		});
+		
 		btnNewButton_10.setHorizontalAlignment(SwingConstants.LEFT);
 		GridBagConstraints gbc_btnNewButton_10 = new GridBagConstraints();
 		gbc_btnNewButton_10.fill = GridBagConstraints.HORIZONTAL;
@@ -253,6 +296,32 @@ public class simulator extends JFrame {
 		gbc_btnNewButton_10.gridx = 0;
 		gbc_btnNewButton_10.gridy = 7;
 		panel.add(btnNewButton_10, gbc_btnNewButton_10);
+		MouseLocation mousecoords = new MouseLocation();
+		
+		JButton btnLinea = new JButton("Linea");
+		btnLinea.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				DrawLine linedrawer = new DrawLine();
+				linedrawer.setColor(Color.RED);
+				linedrawer.paint(panel_1.getGraphics());
+			}
+		});
+		btnLinea.setHorizontalAlignment(SwingConstants.LEFT);
+		GridBagConstraints gbc_btnLinea = new GridBagConstraints();
+		gbc_btnLinea.anchor = GridBagConstraints.WEST;
+		gbc_btnLinea.fill = GridBagConstraints.HORIZONTAL;
+		gbc_btnLinea.insets = new Insets(0, 0, 5, 0);
+		gbc_btnLinea.gridx = 0;
+		gbc_btnLinea.gridy = 8;
+		panel.add(btnLinea, gbc_btnLinea);
+		
+		textMouseCoords = new JTextField();
+		GridBagConstraints gbc_textMouseCoords = new GridBagConstraints();
+		gbc_textMouseCoords.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textMouseCoords.gridx = 0;
+		gbc_textMouseCoords.gridy = 9;
+		textMouseCoords.setText(mousecoords.getMouseLocation());
+		panel.add(textMouseCoords, gbc_textMouseCoords);
+		textMouseCoords.setColumns(10);
 	}
-
 }
