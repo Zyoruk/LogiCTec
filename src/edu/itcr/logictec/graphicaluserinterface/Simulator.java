@@ -301,9 +301,7 @@ public class Simulator extends JFrame {
 		JButton btnLinea = new JButton("Linea");
 		btnLinea.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				DrawLine linedrawer = new DrawLine();
-				linedrawer.setColor(Color.RED);
-				linedrawer.paint(panel_1.getGraphics());
+
 			}
 		});
 		btnLinea.setHorizontalAlignment(SwingConstants.LEFT);
