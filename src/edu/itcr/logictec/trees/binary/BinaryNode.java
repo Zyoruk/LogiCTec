@@ -39,6 +39,12 @@ public class BinaryNode<K>{
         this.right = null;
     }
     
+    //*********************************************************//
+    /*
+     * Regular setters and getters
+     */
+    //*********************************************************//
+    
     public K getData(){
     	return this.data;
     }
@@ -65,39 +71,11 @@ public class BinaryNode<K>{
     }
     
     public void setRight(K pk){
-    	BinaryNode<K> left = new BinaryNode<K>(pk);
-    	this.right = left;
+    	BinaryNode<K> right = new BinaryNode<K>(pk);
+    	this.right = right;
     }
     
     public void setRight(BinaryNode<K> pk){
     	this.right = pk;
-    }
-
-    /* Recorridos */
-    void preorden (BinaryNode<K> node){
-        if(node == null){
-            return;
-        }
-        System.out.println(data);
-        left.preorden(node.left);
-        right.preorden(node.right);
-    }
-
-    void inorden(BinaryNode<K> node){
-        if(node == null){
-            return;
-        }
-        left.inorden(node.left);
-        System.out.println(data);
-        right.inorden(node.right);
-    }
-
-    void postorden(BinaryNode<K> node){
-        if(node == null){
-            return;
-        }
-        left.postorden(node.left);
-        right.postorden(node.right);
-        System.out.println(data);
     }
 }

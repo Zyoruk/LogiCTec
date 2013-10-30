@@ -6,17 +6,17 @@ public class Or extends LogicGate<Integer> {
 		super();
 	}
 
+	/*
+	 * Sets the output of the logic gate as a Or gate would.
+	 */
 	protected void setRoot(){
 		if(this.root.getRight() == null || this.root.getLeft() == null){
 			return;
 		} else{
-			this.getRoot().setData(this.getRoot().getLeft().getData() + 
-					   this.getRoot().getRight().getData());
-			//System.out.println("***");
-			//System.out.println(this.getRoot().getData());
-			//System.out.println("***");
-			if (this.getRoot().getData() > 1){
-				this.getRoot().setData(1);
+			this.root.setData(this.root.getLeft().getData() + 
+					   this.root.getRight().getData());
+			if (this.root.getData() > 1){
+				this.root.setData(1);
 			}
 		}
 	}

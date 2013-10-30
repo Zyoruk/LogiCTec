@@ -6,18 +6,17 @@ public class Xor extends LogicGate<Integer> {
 		super();
 	}
 
+	/*
+	 * Sets the output of the logic gate as a Xor gate would.
+	 */
 	protected void setRoot(){
 		if(this.root.getRight() == null || this.root.getLeft() == null){
 			return;
 		} else{			
-			//System.out.println("*************");
-			//System.out.println(this.getRoot().getLeft().getData());
-			//System.out.println(this.getRoot().getRight().getData());
-			//System.out.println("*************");
-			if(this.getRoot().getLeft().getData() == this.getRoot().getRight().getData()){
-				this.getRoot().setData(0);
+			if(this.root.getLeft().getData() == this.root.getRight().getData()){
+				this.root.setData(0);
 			} else{
-				this.getRoot().setData(1);
+				this.root.setData(1);
 			}
 		}
 	}

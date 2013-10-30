@@ -50,6 +50,7 @@ public class DrawLine extends JPanel {
 			this.c = pcolor;
 		}
 		public void paint(Graphics g){
+			
 			g.drawLine(_x, _y, _x2, _y2);
 		}
 }

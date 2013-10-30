@@ -6,16 +6,19 @@ public class Nand extends LogicGate<Integer> {
 		super();
 	}
 
+	/*
+	 * Sets the output of the logic gate as a Nand gate would.
+	 */
 	protected void setRoot(){
 		if(this.root.getRight() == null || this.root.getLeft() == null){
 			return;
 		} else{
-			this.getRoot().setData(this.getRoot().getLeft().getData() * 
-								   this.getRoot().getRight().getData());
-			if(this.getRoot().getData() == 0){
-				this.getRoot().setData(1);
+			this.root.setData(this.root.getLeft().getData() * 
+								   this.root.getRight().getData());
+			if(this.root.getData() == 0){
+				this.root.setData(1);
 			} else{
-				this.getRoot().setData(0);
+				this.root.setData(0);
 			}
 		}
 	}

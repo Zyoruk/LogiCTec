@@ -8,6 +8,12 @@ public class Not extends LogicGate<Integer> {
 		super();
 	}
 	
+	//*****************************************************************//
+	/*
+	 * As a NOT only has one input, the method to set up the inputs are 
+	 * rewritten setting both inputs equally.
+	 */	
+	
 	public void setInA(int pdata){
 		if (this.root == null){
 			BinaryNode<Integer> node = new BinaryNode<Integer>();
@@ -27,15 +33,20 @@ public class Not extends LogicGate<Integer> {
 		this.root.setLeft(pdata);
 		setRoot();
 	}
+	
+	//*****************************************************************//
 
+	/*
+	 * Sets the output of the logic gate as a Not gate would.
+	 */
 	protected void setRoot(){
 		if(this.root.getRight() == null || this.root.getLeft() == null){
 			return;
 		} else{
-			if(this.getRoot().getData() == 0){
-				this.getRoot().setData(1);
+			if(this.root.getData() == 0){
+				this.root.setData(1);
 			} else{
-				this.getRoot().setData(0);
+				this.root.setData(0);
 			}
 		}
 	}

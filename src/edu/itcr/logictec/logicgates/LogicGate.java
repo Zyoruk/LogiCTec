@@ -24,12 +24,15 @@
 package edu.itcr.logictec.logicgates;
 
 import edu.itcr.logictec.trees.binary.BinaryNode;
+import edu.itcr.startec.datastructs.simplelist.SimpleList;
 
 public class LogicGate<K>{
     protected BinaryNode<K> root;
+    public SimpleList<K> list;
     
     public LogicGate(){
         this.root = null;
+        this.list = new SimpleList<K>();
     }
 
     public LogicGate(BinaryNode<K> pnodeA, BinaryNode<K> pnodeB){
@@ -37,7 +40,11 @@ public class LogicGate<K>{
         this.root.setLeft(pnodeA);
         this.root.setRight(pnodeB);
     }
-
+    
+    /*
+     * Sets logicgate's first entrance. Sets the left node of a tree which has 
+     * two leafs. 
+     */
 	public void setInA(K pdata){
 		if (pdata == null){
 			return;
@@ -52,6 +59,10 @@ public class LogicGate<K>{
 		}
 	}
 	
+	/*
+     * Sets logicgate's second entrance. Sets the left node of a tree which has 
+     * two leafs. 
+     */
 	public void setInB(K pdata){
 		if (pdata == null){
 			return;
@@ -62,22 +73,68 @@ public class LogicGate<K>{
 			}
 			this.root.setRight(pdata);
 			setRoot();
-		}
-		
+		}		
 	}
 	
-	public BinaryNode<K> getRoot(){
-		return this.root;
-	}
-	
+	/*
+	 * Returns the exit of the logic gate
+	 */
 	public K getExit(){
 		return this.root.getData();
 	}
 	
+	/*
+	 * Goes through the tree made by one exit and returns it as an array.
+	 */
+	public int[] printGate(){
+		preorden();
+		int[] array = new int[list.length()];
+		for(int i = 0 ; i < list.length() ; i++){
+			array[i] = (Integer) list.getRootData();
+			list.delete();
+		}
+		return array;
+	}
+	
+	/*
+	 * How to goes through the tree made by an exit.
+	 */
+	public void preorden (){
+        //System.out.println(this.root.getData());
+        list.append(this.root.getData());
+        if (this.root.getLeft() != null){
+        	preorden_extended(this.root.getLeft());
+        }
+        if (this.root.getRight() != null){
+        	preorden_extended(this.root.getRight());
+        }
+    }
+	
+	/*
+	 * Extended method for going though the exit.
+	 */
+	private void preorden_extended(BinaryNode<K> pnode){
+		System.out.println(pnode.getData());
+        list.append(pnode.getData());
+        if (pnode.getLeft() != null){
+        	preorden_extended(this.root.getLeft());
+        }
+        if (pnode.getRight() != null){
+        	preorden_extended(this.root.getRight());
+        }
+	}
+	
+	/*
+	 * Common method for all logic gates. Each one implements its own version 
+	 * and the an different output.
+	 */
 	protected void setRoot(){
 		System.out.println("Nothing here :p");
 	}
 	
+	/*
+	 * Sets the output node of a logic gate as input A of another logic gate.
+	 */
 	public void connectGatesA(LogicGate<K> pgate){
 		if(pgate.root == null){
 			return;
@@ -86,11 +143,14 @@ public class LogicGate<K>{
 				BinaryNode<K> node = new BinaryNode<K>();
 				this.root = node;
 			}
-			this.root.setLeft(pgate.getRoot());
+			this.root.setLeft(pgate.root);
 			setRoot();
 		}
 	}
 	
+	/*
+	 * Sets the output node of a logic gate as input B of another logic gate.
+	 */
 	public void connectGatesB(LogicGate<K> pgate){
 		if(pgate.root == null){
 			return;
@@ -99,7 +159,7 @@ public class LogicGate<K>{
 				BinaryNode<K> node = new BinaryNode<K>();
 				this.root = node;
 			}
-			this.root.setRight(pgate.getRoot());
+			this.root.setRight(pgate.root);
 			setRoot();
 		}
 	}

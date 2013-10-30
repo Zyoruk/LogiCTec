@@ -6,14 +6,17 @@ public class Xnor extends LogicGate<Integer> {
 		super();
 	}
 
+	/*
+	 * Sets the output of the logic gate as a Xnor gate would.
+	 */
 	protected void setRoot(){
 		if(this.root.getRight() == null || this.root.getLeft() == null){
 			return;
 		} else{
-			if(this.getRoot().getLeft().getData() == this.getRoot().getRight().getData()){
-				this.getRoot().setData(1);
+			if(this.root.getLeft().getData() == this.root.getRight().getData()){
+				this.root.setData(1);
 			} else{
-				this.getRoot().setData(0);
+				this.root.setData(0);
 			}
 		}
 	}
