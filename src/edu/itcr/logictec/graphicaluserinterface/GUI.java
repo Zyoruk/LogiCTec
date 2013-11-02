@@ -261,12 +261,6 @@ public class GUI extends JFrame {
 		final JToggleButton btnConnectTo = new JToggleButton("Connect to");
 		btnConnectTo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(btnConnectTo.isSelected()){
-					if (drawGate.getClikedOnes().length==2){
-						btnConnectTo.setSelected(false);
-					}
-					drawGate.connect(Color.BLACK);
-				}	
 			}
 		});
 		btnConnectTo.setHorizontalAlignment(SwingConstants.LEFT);
