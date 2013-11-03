@@ -28,23 +28,32 @@ public class DrawGate{
 	private int _y;
 	private int _height;
 	private String _gateKind;
-	private JComponent panel_1;
+	private MyPanel panel_1;
 	private int i = 0;
-	private MyLabel[] labelList;
-	private MyLabel[] temp;	
+	private MyLabel[] clickedOnes;
 	private Component[] components ;
+	private MyLabel[] labelList;
+	private JTextField input1;
+	private JTextField input2;
+	private JTextField output;
 
-
-	public DrawGate(int px,int py,int ph,String ptc,JComponent pPanel_1){
+	public DrawGate(){
+		components = new Component[10];
+		clickedOnes = new MyLabel[2];
+	}
+	
+	public DrawGate(int px,int py,int ph,String ptc,MyPanel pPanel_1, MyLabel[] pLabelList){
 		this._x = px;
 		this._y = py;
 		this._height = ph;
 		this._gateKind = ptc;
 		this.panel_1 = pPanel_1;	
 		components = new Component[10];
-		labelList = new MyLabel[10];
-		temp = new MyLabel[10];
-
+		this.labelList = pLabelList;
+		clickedOnes = new MyLabel[2];
+		input1 = new JTextField();
+		input2 = new JTextField();
+		output = new JTextField();
 	}
 
 	/**
@@ -52,7 +61,7 @@ public class DrawGate{
 	 * @throws IOException
 	 * @author Zyoruk
 	 */
-	public void paint() throws IOException{
+	public MyLabel paint() throws IOException{
 		BufferedImage image;
 
 		if (_gateKind == "AND"){
@@ -75,23 +84,19 @@ public class DrawGate{
 
 		}else{
 			image = ImageIO.read(new File(Constants.notImage));
-
-
 		}
 
-		MyLabel picLabel = new MyLabel(new ImageIcon(image));
+		MyLabel picLabel = new MyLabel(new ImageIcon(image), panel_1);
 		labelList[i] = picLabel;
 		i++;			
 
-		JTextField input1 = new JTextField();		
+		
 		picLabel.add(input1);
 		input1.setBounds(0, 0, 20, 20);	
-
-		JTextField input2 = new JTextField();		
+	
 		picLabel.add(input2);
 		input2.setBounds(0,50, 20, 20);
-
-		JTextField output = new JTextField();		
+		
 		picLabel.add(output);
 		output.setBounds(80,50, 20, 20);
 
@@ -99,15 +104,25 @@ public class DrawGate{
 		picLabel.setBounds(_x,_y,_height,_height);
 
 
+		if(getInA()!= null && getInB()!= null ){
+			setInA(getInA());
+			setInB(getInB());
+			setInA(getInA());
+			setInB(getInB());
+		}
 		//Creates a temporal list of components
 		for(int i = 0 ; i < panel_1.getComponentCount();i++){
-			components[i] = panel_1.getComponent(i);
+			if(i != 9){
+				components[i] = panel_1.getComponent(i);
+			}else{
+				break;
+			}
 		}
-
+		
+		return picLabel;
+		
 	}
-
-
-
+	
 	/**
 	 * Undo the last change made.
 	 * @author Zyoruk
@@ -140,27 +155,35 @@ public class DrawGate{
 		return this._gateKind;
 	}
 
-	public void connect(Color color){    	
-		for (int i = 0; i < labelList.length ; i++){        			
-			if( temp.length == 2 ){
-				Graphics g = panel_1.getGraphics();
-				g.setColor(color);
-				g.drawLine(temp[0].getX(),temp[0].getY(),temp[1].getX(),temp[1].getY());
-			}else{
-				System.out.print(false);
-			}
-		}    	
+	public MyLabel[] getListOfLabels(){
+		return this.labelList;
 	}
 
-	public MyLabel[] getClikedOnes(){
-		return this.temp;
-	}
-
-	public void setClickedOnes(){
-		for (int i = 0; i < labelList.length ; i++){
-			if (labelList[i].getIfClicked() == true){
-				temp[i] = (labelList[i]);
-			}
+	public String getInA(){
+		if (this.input1 != null){
+			return this.input1.getText();
+		}else{
+			return "";
 		}
+	}
+	
+	public String getInB(){
+		if (this.input2 != null){
+			return this.input2.getText();
+		}else{
+			return "";
+		}
+	}
+	
+	public void setInA(String pInput1){
+		this.input1.setText(pInput1);
+	}
+	
+	public void setInB(String pInput2){
+		this.input2.setText(pInput2);
+	}
+	
+	public void setOut(String pOut){
+		this.output.setText(pOut);
 	}
 }

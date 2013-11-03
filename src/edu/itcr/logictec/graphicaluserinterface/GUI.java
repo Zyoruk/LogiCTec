@@ -27,6 +27,7 @@ import javax.swing.JLabel;
 
 import edu.itcr.logictec.constants.Constants;
 import edu.itcr.logictec.logicaluserinterface.LUI;
+import edu.itcr.logictec.logicgates.LogicGate;
 
 import java.awt.Color;
 import java.io.IOException;
@@ -50,10 +51,13 @@ public class GUI extends JFrame {
 	private JPanel contentPane;
 	private DrawGate drawGate;
 	private LUI createGates;
-	private JPanel panel_1;
+	private MyPanel panel_1;
 	private int listIndex;
 	private String[] gateStrings;
 	private FilteredJList list;
+	private MyLabel[] labelList = new MyLabel[10];
+	private int J = 0;
+	private LogicGate logicgate;
 	
 
 	/**
@@ -76,9 +80,10 @@ public class GUI extends JFrame {
 
 	/**
 	 * Creates the frame and all of its components
+	 * @throws IOException 
 	 */
-	public GUI() {
-		
+	public GUI() throws IOException {
+		drawGate = new DrawGate();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		setBounds(100, 100, 800, 600);
@@ -181,7 +186,7 @@ public class GUI extends JFrame {
 		
 		panel.setLayout(gbl_panel);
 		
-		panel_1 = new JPanel();
+		panel_1 = new MyPanel();
 		panel_1.setBackground(Color.WHITE);
 		contentPane.add(panel_1, BorderLayout.CENTER);
 		
@@ -246,28 +251,43 @@ public class GUI extends JFrame {
 				
 				for (int i = 0 ; i < gateStrings.length; i++)
 					if (gateStrings[i] == list.getSelectedValue()){
-						drawGate = new DrawGate(220,110,100,(String) list.getSelectedValue(),
-								   panel_1);
-						createGates = new LUI ((String)list.getSelectedValue());
-						createGates.createLogicGates();
-					try {
-						drawGate.paint();
-					} catch (IOException pe) {
-						pe.printStackTrace();
-					}					
+						if (J != 10){
+							drawGate = new DrawGate(220,110,100,(String) list.getSelectedValue(),
+									   panel_1, labelList);						
+							createGates = new LUI ((String)list.getSelectedValue());
+							logicgate = createGates.createLogicGates();
+							try {
+								drawGate.paint();
+							} catch (IOException pe) {
+								pe.printStackTrace();
+							}	
+							J++;
+						}else{
+							break;
+						}				
 				}
 			}
 		});
+
+		
 		panel2.add(btnDraw, "cell 0 2,growx");
 		
 		final JToggleButton btnConnectTo = new JToggleButton("Connect to");
 		btnConnectTo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if(drawGate.getListOfLabels()[0] == null){
+					btnConnectTo.setSelected(false);
+				}else{
+					if (panel_1.getClikedOnes()[0] != null && panel_1.getClikedOnes()[1] != null){ 
+						panel_1.connect(Color.RED);
+					}else{
+						
+					}
+				}
 			}
 		});
+		
 		btnConnectTo.setHorizontalAlignment(SwingConstants.LEFT);
 		panel2.add(btnConnectTo, "cell 0 3");
-		
-
 	}
 }
