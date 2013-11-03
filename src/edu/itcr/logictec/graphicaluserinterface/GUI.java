@@ -19,21 +19,18 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Panel;
 
-import java.awt.Graphics;
+
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.JLabel;
 
 import edu.itcr.logictec.constants.Constants;
+import edu.itcr.logictec.logicaluserinterface.LUI;
 
 import java.awt.Color;
 import java.io.IOException;
-import java.util.ArrayList;
-
-import javax.swing.JList;
 import net.miginfocom.swing.MigLayout;
-import javax.swing.JTextField;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
@@ -52,6 +49,7 @@ public class GUI extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private DrawGate drawGate;
+	private LUI createGates;
 	private JPanel panel_1;
 	private int listIndex;
 	private String[] gateStrings;
@@ -146,6 +144,7 @@ public class GUI extends JFrame {
 			
 			public void actionPerformed(ActionEvent e) {
 				drawGate.unDo();
+				createGates.undo();
 			}
 		});
 		menuBar.add(btnUndo1);
@@ -155,6 +154,7 @@ public class GUI extends JFrame {
 			
 			public void actionPerformed(ActionEvent e) {
 				drawGate.reDo();
+				createGates.redo();
 			}
 		});
 		menuBar.add(btnRedo1);
@@ -248,6 +248,8 @@ public class GUI extends JFrame {
 					if (gateStrings[i] == list.getSelectedValue()){
 						drawGate = new DrawGate(220,110,100,(String) list.getSelectedValue(),
 								   panel_1);
+						createGates = new LUI ((String)list.getSelectedValue());
+						createGates.createLogicGates();
 					try {
 						drawGate.paint();
 					} catch (IOException pe) {
