@@ -1,6 +1,9 @@
 package edu.itcr.logictec.graphicaluserinterface;
 
-
+/**
+ * This is a class that extends JLabel. Creates a panel that can be dragged and
+ * dropped. Also, it sets a flag true when clicked on it.
+ */
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -17,6 +20,8 @@ public class MyLabel extends JLabel implements MouseMotionListener, MouseListene
 	
 	public MyLabel(){
 		super();
+		addMouseMotionListener(this);
+		addMouseListener(this);
 	}
 	
 	public MyLabel(int px , int py , int pheight, MyPanel pPanel_1){

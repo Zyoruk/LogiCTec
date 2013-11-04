@@ -1,6 +1,9 @@
 package edu.itcr.logictec.graphicaluserinterface;
 
-
+/**
+ * Class on charge of drawing the respective gate with its image.
+ * It creates a MyLabel.
+ */
 
 import java.awt.Color;
 import java.awt.Component;
@@ -89,7 +92,11 @@ public class DrawGate{
 		MyLabel picLabel = new MyLabel(new ImageIcon(image), panel_1, _gateKind);
 		labelList[i] = picLabel;
 		i++;			
-
+		
+		/*
+		 * We create 3 textfields for every new gate.
+		 * The "Not" gate has only one input, then we dont add to it a textfield
+		 */
 		if(_gateKind != "NOT"){
 			picLabel.add(input1);
 			input1.setBounds(0, 0, 20, 20);
@@ -147,32 +154,60 @@ public class DrawGate{
 		}
 	}
 
+	/**
+	 * return the kind of gate that has been created
+	 * @return _gateKind which is a String.
+	 */
 	public String getGateKind(){
 		return this._gateKind;
 	}
 
+	/**
+	 * Gets  the list of MyLabels created
+	 * @return lalbelList 
+	 */
 	public MyLabel[] getListOfLabels(){
 		return this.labelList;
 	}
 
+	/**
+	 * Gets the value of the input 1 as an Integer.
+	 * @return temp 
+	 */
 	public int getInA(){
 		int temp = Integer.parseInt(this.input1.getText());
 		return temp;
 	}
 	
+	/**
+	 * Gets the value of the input 2 as an Integer.
+	 * @return temp
+	 */
 	public int getInB(){
 		int temp = Integer.parseInt(this.input2.getText());
 		return temp;
 	}
 	
+	/**
+	 * Sets the value of the Input1
+	 * @param pInput1
+	 */
 	public void setInA(String pInput1){
 		this.input1.setText(pInput1);
 	}
 	
+	/**
+	 * Sets the value of the Input2
+	 * @param pInput2
+	 */
 	public void setInB(String pInput2){
 		this.input2.setText(pInput2);
 	}
 	
+	/**
+	 * sets the  value ofr the output of the gate
+	 * @param pOut
+	 */
 	public void setOut(String pOut){
 		this.output.setText(pOut);
 	}

@@ -9,6 +9,11 @@ import edu.itcr.logictec.logicgates.Or;
 import edu.itcr.logictec.logicgates.Xnor;
 import edu.itcr.logictec.logicgates.Xor;
 
+/**
+ * Creates the logic gates depending on a string.
+ * @author zyoruk
+ *
+ */
 public class LUI {
 	
 	private String _gateKind;
