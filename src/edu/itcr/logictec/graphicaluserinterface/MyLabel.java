@@ -13,6 +13,7 @@ public class MyLabel extends JLabel implements MouseMotionListener, MouseListene
 	
 	private boolean amIClicked;
 	private MyPanel panel_1;
+	private String gatekind;
 	
 	public MyLabel(){
 		super();
@@ -26,12 +27,13 @@ public class MyLabel extends JLabel implements MouseMotionListener, MouseListene
 		panel_1 = pPanel_1;
 	}
 
-	public MyLabel(ImageIcon pimageIcon, MyPanel pPanel_1) {
+	public MyLabel(ImageIcon pimageIcon, MyPanel pPanel_1, String pGateKind) {
 		super(pimageIcon);
 		addMouseMotionListener(this);
 		addMouseListener(this);
 		amIClicked = false;
 		panel_1 = pPanel_1;
+		gatekind = pGateKind;
 	}
 	
 	@Override
@@ -44,6 +46,21 @@ public class MyLabel extends JLabel implements MouseMotionListener, MouseListene
 		);
 	}
 
+	public boolean getIfClicked(){
+		return amIClicked;
+	}
+	
+	public void setIfClicked(boolean true_false){
+		this.amIClicked = true_false;
+	}
+	
+	public String getGatekind(){
+		return this.gatekind;
+	}
+	
+	public void setGateKind(String pGK){
+		this.gatekind = pGK;
+	}
 	@Override
 	public void mouseMoved(MouseEvent pmme) {
 		// TODO Auto-generated method stub
@@ -77,13 +94,5 @@ public class MyLabel extends JLabel implements MouseMotionListener, MouseListene
 	public void mouseReleased(MouseEvent arg0) {
 		// TODO Auto-generated method stub
 		
-	}
-	
-	public boolean getIfClicked(){
-		return amIClicked;
-	}
-	
-	public void setIfClicked(boolean true_false){
-		this.amIClicked = true_false;
 	}
 }

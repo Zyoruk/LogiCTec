@@ -33,12 +33,33 @@ public class MyPanel extends JPanel {
 		return this.clickedOnes;
 	}
 	
-	public void connect(Color color){   
+	public void connectOIA(Color color){   
+		if (clickedOnes[1].getGatekind() == "NOT"){
+			Graphics g = this.getGraphics();
+			g.setColor(color);
+			g.drawLine(clickedOnes[0].getX() + 100,clickedOnes[0].getY() + 50,
+			clickedOnes[1].getX(),clickedOnes[1].getY()+50);
+		}else{
+			if (clickedOnes[0] !=null && clickedOnes[1] !=null){        			
+				Graphics g = this.getGraphics();
+				g.setColor(color);
+				g.drawLine(clickedOnes[0].getX() + 100,clickedOnes[0].getY() + 50,
+						clickedOnes[1].getX(),clickedOnes[1].getY());
+			}  
+		}
+	}
+	
+	public void connectOIB(Color color){   
 		if (clickedOnes[0] !=null && clickedOnes[1] !=null){        			
 			Graphics g = this.getGraphics();
 			g.setColor(color);
 			g.drawLine(clickedOnes[0].getX() + 100,clickedOnes[0].getY() + 50,
-					clickedOnes[1].getX(),clickedOnes[1].getY());
+					clickedOnes[1].getX(),clickedOnes[1].getY()+50);
 		}    	
+	}
+	
+	public void clearClickedOnes(){
+		clickedOnes[0] = null;
+		clickedOnes[1] = null;
 	}
 }

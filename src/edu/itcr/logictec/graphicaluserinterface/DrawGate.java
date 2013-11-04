@@ -86,30 +86,26 @@ public class DrawGate{
 			image = ImageIO.read(new File(Constants.notImage));
 		}
 
-		MyLabel picLabel = new MyLabel(new ImageIcon(image), panel_1);
+		MyLabel picLabel = new MyLabel(new ImageIcon(image), panel_1, _gateKind);
 		labelList[i] = picLabel;
 		i++;			
 
+		if(_gateKind != "NOT"){
+			picLabel.add(input1);
+			input1.setBounds(0, 0, 20, 20);
+			input1.setText("0");
+		}
 		
-		picLabel.add(input1);
-		input1.setBounds(0, 0, 20, 20);	
-	
 		picLabel.add(input2);
 		input2.setBounds(0,50, 20, 20);
+		input2.setText("0");
 		
 		picLabel.add(output);
 		output.setBounds(80,50, 20, 20);
 
 		panel_1.add(picLabel);
 		picLabel.setBounds(_x,_y,_height,_height);
-
-
-		if(getInA()!= null && getInB()!= null ){
-			setInA(getInA());
-			setInB(getInB());
-			setInA(getInA());
-			setInB(getInB());
-		}
+		
 		//Creates a temporal list of components
 		for(int i = 0 ; i < panel_1.getComponentCount();i++){
 			if(i != 9){
@@ -159,20 +155,14 @@ public class DrawGate{
 		return this.labelList;
 	}
 
-	public String getInA(){
-		if (this.input1 != null){
-			return this.input1.getText();
-		}else{
-			return "";
-		}
+	public int getInA(){
+		int temp = Integer.parseInt(this.input1.getText());
+		return temp;
 	}
 	
-	public String getInB(){
-		if (this.input2 != null){
-			return this.input2.getText();
-		}else{
-			return "";
-		}
+	public int getInB(){
+		int temp = Integer.parseInt(this.input2.getText());
+		return temp;
 	}
 	
 	public void setInA(String pInput1){

@@ -220,8 +220,8 @@ public class GUI extends JFrame {
 		
 		JPanel panel2 = new JPanel();
 		contentPane.add(panel2, BorderLayout.EAST);
-		panel2.setLayout(
-			   new MigLayout("", "[70px,grow][]", "[40px][][][][][grow][grow]"));	
+		panel2.setLayout(new MigLayout("", "[70px,grow][]", 
+				         "[40px][][][][][][grow][grow]"));	
 		
 		gateStrings = new String[]{"AND","NAND","XOR","XNOR","OR","NOR","NOT"};		
 		
@@ -251,13 +251,29 @@ public class GUI extends JFrame {
 				
 				for (int i = 0 ; i < gateStrings.length; i++)
 					if (gateStrings[i] == list.getSelectedValue()){
+						
 						if (J != 10){
-							drawGate = new DrawGate(220,110,100,(String) list.getSelectedValue(),
-									   panel_1, labelList);						
-							createGates = new LUI ((String)list.getSelectedValue());
+							
+							drawGate = new DrawGate(220,110,100,
+									   (String) list.getSelectedValue(),panel_1, 
+									   labelList);	
+							
+							createGates =
+									  new LUI ((String)list.getSelectedValue());
+
 							logicgate = createGates.createLogicGates();
+							
 							try {
 								drawGate.paint();
+								if(drawGate.getGateKind()!= "NOT"){
+									logicgate.setInA(drawGate.getInA());
+									logicgate.setInB(drawGate.getInB());
+									drawGate.setOut(Integer.toString((int)logicgate.getExit()));
+								}else{
+									logicgate.setInA(drawGate.getInB());
+									logicgate.setInB(drawGate.getInB());
+									drawGate.setOut(Integer.toString((int)logicgate.getExit()));
+								}
 							} catch (IOException pe) {
 								pe.printStackTrace();
 							}	
@@ -272,22 +288,46 @@ public class GUI extends JFrame {
 		
 		panel2.add(btnDraw, "cell 0 2,growx");
 		
-		final JToggleButton btnConnectTo = new JToggleButton("Connect to");
-		btnConnectTo.addActionListener(new ActionListener() {
+		final JToggleButton btnConnectOIA = new JToggleButton("Connect OIA");
+		btnConnectOIA.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(drawGate.getListOfLabels()[0] == null){
-					btnConnectTo.setSelected(false);
+					btnConnectOIA.setSelected(false);
+					
 				}else{
-					if (panel_1.getClikedOnes()[0] != null && panel_1.getClikedOnes()[1] != null){ 
-						panel_1.connect(Color.RED);
-					}else{
+					if (panel_1.getClikedOnes()[0] != 
+						null && panel_1.getClikedOnes()[1] != null){ 
 						
+						panel_1.connectOIA(Color.RED);
+						btnConnectOIA.setSelected(false);
+						panel_1.clearClickedOnes();
 					}
 				}
 			}
-		});
+		});		
+		btnConnectOIA.setHorizontalAlignment(SwingConstants.LEFT);
+		panel2.add(btnConnectOIA, "cell 0 3");
 		
-		btnConnectTo.setHorizontalAlignment(SwingConstants.LEFT);
-		panel2.add(btnConnectTo, "cell 0 3");
+		final JToggleButton btnConnectOIB = new JToggleButton("Connect OIB");
+		btnConnectOIB.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				if(drawGate.getListOfLabels()[0] == null){
+					btnConnectOIB.setSelected(false);
+					
+				}else{
+					if (panel_1.getClikedOnes()[0] != 
+						null && panel_1.getClikedOnes()[1] != null){ 
+						
+						panel_1.connectOIB(Color.RED);
+						
+						btnConnectOIB.setSelected(false);
+						panel_1.clearClickedOnes();
+					}
+				}
+			}
+		});	
+		btnConnectOIB.setHorizontalAlignment(SwingConstants.LEFT);
+		panel2.add(btnConnectOIB, "cell 0 4");
 	}
 }

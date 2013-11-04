@@ -40,14 +40,10 @@ public class Not extends LogicGate<Integer> {
 	 * Sets the output of the logic gate as a Not gate would.
 	 */
 	protected void setRoot(){
-		if(this.root.getRight() == null || this.root.getLeft() == null){
-			return;
-		} else{
-			if(this.root.getData() == 0){
-				this.root.setData(1);
-			} else{
-				this.root.setData(0);
-			}
+		if(this.root.getLeft().getData() == 0){
+			this.root.setData(1);
+		}else{
+			this.root.setData(0);
 		}
 	}
 }
