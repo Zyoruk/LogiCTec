@@ -42,23 +42,33 @@ import javax.swing.ListSelectionModel;
  *
  */
 
+@SuppressWarnings("serial")
 public class GUI extends JFrame {
 
 	/**
 	 * Different variables that we are going to use
 	 */
-	private static final long serialVersionUID = 1L;
+	
+	//variables for graphical part
 	private JPanel contentPane;
 	private DrawGate drawGate;
-	private LUI createGates;
 	private MyPanel panel_1;
-	private int listIndex;
-	private String[] gateStrings;
 	private FilteredJList list;
-	private MyLabel[] labelList = new MyLabel[10];
 	private int J = 0;
-	private LogicGate logicgate;
+
+	private DrawGate[] gatelist;
+	private MyLabel[] labelList = new MyLabel[10];
+	private String[] gateStrings;
+	private MyLabel[] clickedOnes;
+	
+	//variables for logical part
+	@SuppressWarnings("rawtypes")
 	private LogicGate[] logicgatelist;
+	private LUI createGates;
+	@SuppressWarnings("rawtypes")
+	private LogicGate logicgate;
+
+	private static GUI frame;
 
 
 	/**
@@ -70,7 +80,7 @@ public class GUI extends JFrame {
 
 			public void run() {
 				try {
-					GUI frame = new GUI();
+					frame = new GUI();
 					frame.setVisible(true);	
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -86,7 +96,9 @@ public class GUI extends JFrame {
 	public GUI() throws IOException {
 		// we are gonna use these objects
 		drawGate = new DrawGate();
-		logicgatelist = new LogicGate[2];  
+		logicgatelist = new LogicGate[2]; 
+		gatelist = new DrawGate[10];
+		clickedOnes = new MyLabel[2];
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);		
 		setBounds(100, 100, 800, 600);
@@ -98,13 +110,14 @@ public class GUI extends JFrame {
 		// menu inside the top menu
 		JMenu mnAccesories = new JMenu("Accesories");
 		mnAccesories.setIcon(new ImageIcon(GUI.class.getResource(
-				Constants.menuGIF)));
+							 Constants.menuGIF)));
+		
 		menuBar.add(mnAccesories);
 
 		// button that will let us import a component
 		JButton btnImport = new JButton("Import");		
 		btnImport.setIcon(new ImageIcon(GUI.class.getResource(
-				Constants.directoryGIF)));
+						  Constants.directoryGIF)));
 		btnImport.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				System.out.print("Esto tiene que abrir desde un XML");
@@ -134,7 +147,6 @@ public class GUI extends JFrame {
 		// button that will open a document
 		JButton btnDoc = new JButton("Information");
 		btnDoc.addActionListener(new ActionListener() {
-
 			public void actionPerformed(ActionEvent e) {
 				System.out.print("Abre la documentacion");
 			}
@@ -144,7 +156,6 @@ public class GUI extends JFrame {
 		// button that will undo changes
 		JButton btnUndo1 = new JButton("Undo");
 		btnUndo1.addActionListener(new ActionListener() {
-
 			public void actionPerformed(ActionEvent e) {
 				drawGate.unDo();
 				createGates.undo();
@@ -155,7 +166,6 @@ public class GUI extends JFrame {
 		// button that will redo removals		
 		JButton btnRedo1 = new JButton("Redo");
 		btnRedo1.addActionListener(new ActionListener() {
-
 			public void actionPerformed(ActionEvent e) {
 				drawGate.reDo();
 				createGates.redo();
@@ -175,11 +185,11 @@ public class GUI extends JFrame {
 		GridBagLayout gbl_panel = new GridBagLayout();
 
 		gbl_panel.columnWidths = new int[]{129, 0};
-
+		
 		gbl_panel.rowHeights = new int[]{19, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-
+		
 		gbl_panel.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-
+		
 		gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
 				0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 
@@ -190,6 +200,7 @@ public class GUI extends JFrame {
 		contentPane.add(panel_1, BorderLayout.CENTER);
 
 		JLabel lblLogicGates = new JLabel("Compuertas logicas");
+		
 		GridBagConstraints gbc_lblLogicGates = new GridBagConstraints();
 		gbc_lblLogicGates.fill = GridBagConstraints.BOTH;
 		gbc_lblLogicGates.insets = new Insets(0, 0, 5, 0);
@@ -218,51 +229,22 @@ public class GUI extends JFrame {
 						ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
 						ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		panel2.add(scrollPane, "cell 0 1,growx,aligny center");
-		listIndex =list.getSelectedIndex();
-
 
 		JButton btnDraw = new JButton("Draw");
 		btnDraw.setHorizontalAlignment(SwingConstants.LEFT);
 
 		btnDraw.addActionListener(new ActionListener() {
-
 			public void actionPerformed(ActionEvent e) {
-
-				for (int i = 0 ; i < gateStrings.length; i++)
+				for (int i = 0 ; i < gateStrings.length; i++){
 					if (gateStrings[i] == list.getSelectedValue()){
-
 						if (J != 10){
-
-							drawGate = new DrawGate(220,110,100,
-									(String) list.getSelectedValue(),panel_1, 
-									labelList);	
-
-							createGates =
-									new LUI ((String)list.getSelectedValue());
-
-							logicgate = createGates.createLogicGates();
-
-							try {
-								drawGate.paint();
-								if(drawGate.getGateKind()!= "NOT"){
-									logicgate.setInA(drawGate.getInA());
-									logicgate.setInB(drawGate.getInB());
-									drawGate.setOut(Integer.toString(
-											(int)logicgate.getExit()));
-								}else{
-									logicgate.setInA(drawGate.getInB());
-									logicgate.setInB(drawGate.getInB());
-									drawGate.setOut(Integer.toString(
-											(int)logicgate.getExit()));
-								}
-							} catch (IOException pe) {
-								pe.printStackTrace();
-							}	
+							createGate();
 							J++;
 						}else{
 							break;
 						}				
 					}
+				}
 			}
 		});
 
@@ -273,29 +255,14 @@ public class GUI extends JFrame {
 		btnConnectOIA.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				if(drawGate.getListOfLabels()[0] == null){
+				if(gatelist[0] == null){
 					btnConnectOIA.setSelected(false);
 
 				}else{
-					if (panel_1.getClikedOnes()[0] != 
-							null && panel_1.getClikedOnes()[1] != null){
-
-						panel_1.connectOIA(Color.RED); 
-
-						createGates =
-								new LUI (panel_1.getClikedOnes()[0].getGatekind());
-						logicgate = createGates.createLogicGates();
-						logicgatelist[0] = logicgate;
-
-						createGates =
-								new LUI (panel_1.getClikedOnes()[1].getGatekind());
-						logicgate = createGates.createLogicGates();
-						logicgatelist[1] = logicgate;
-
-						logicgatelist[0].connectGatesA(logicgatelist[1]);
-
+					if (getClickedOnes()[0] != null && getClickedOnes()[1] 
+						!= null){
+						connectOIA();
 						btnConnectOIA.setSelected(false);
-						panel_1.clearClickedOnes();
 					}
 				}
 			}
@@ -306,30 +273,15 @@ public class GUI extends JFrame {
 		final JToggleButton btnConnectOIB = new JToggleButton("Connect OIB");
 		btnConnectOIB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
-				if(drawGate.getListOfLabels()[0] == null){
+				
+				if(gatelist[0] == null){
 					btnConnectOIB.setSelected(false);
-
+					
 				}else{
-					if (panel_1.getClikedOnes()[0] != 
-							null && panel_1.getClikedOnes()[1] != null){ 
-
-						panel_1.connectOIB(Color.RED);
-						createGates =
-								new LUI (panel_1.getClikedOnes()[0].getGatekind());
-						logicgate = createGates.createLogicGates();
-						logicgatelist[0] = logicgate;
-
-						createGates =
-								new LUI (panel_1.getClikedOnes()[1].getGatekind());
-						logicgate = createGates.createLogicGates();
-						logicgatelist[1] = logicgate;
-
-						logicgatelist[0].connectGatesB(logicgatelist[1]);
-
+					if (getClickedOnes()[0] != null && getClickedOnes()[1] 
+						!= null){ 						
+						connectOIB();
 						btnConnectOIB.setSelected(false);
-
-						panel_1.clearClickedOnes();
 					}
 				}
 			}
@@ -337,4 +289,117 @@ public class GUI extends JFrame {
 		btnConnectOIB.setHorizontalAlignment(SwingConstants.LEFT);
 		panel2.add(btnConnectOIB, "cell 0 4");
 	}
+
+	//Checks the entries of the gates and set the exit.
+	@SuppressWarnings("unchecked")
+	public void check(){
+		for(int i = 0 ;i < gatelist.length; i ++){
+			if (gatelist[i] == null){
+				break;
+			}
+			if(gatelist[i].getGateKind()!= "NOT"){
+				gatelist[i].setInA(Integer.toString(gatelist[i].getInA()));
+				gatelist[i].setInB(Integer.toString(gatelist[i].getInB()));
+				logicgate.setInA(gatelist[i].getInA());
+				logicgate.setInB(gatelist[i].getInB());
+				gatelist[i].setOut(Integer.toString(
+						(int)logicgate.getExit()));
+			}else{
+				gatelist[i].setInA(Integer.toString(gatelist[i].getInA()));
+				gatelist[i].setInB(Integer.toString(gatelist[i].getInB()));
+				logicgate.setInA(gatelist[i].getInB());
+				logicgate.setInB(gatelist[i].getInB());
+				gatelist[i].setOut(Integer.toString(
+						(int)logicgate.getExit()));
+				repaint();
+			}
+		}
+	}
+
+	//Connects logically and graphically two gates Output - InputA
+	@SuppressWarnings("unchecked")
+	public void connectOIA(){
+		panel_1.connectOIA(getClickedOnes(), Color.BLACK);	
+		
+		createGates =
+				new LUI (getClickedOnes()[0].getGatekind());
+		
+		logicgate = createGates.createLogicGates();
+		logicgatelist[0] = logicgate;
+		
+		createGates =
+				new LUI (getClickedOnes()[1].getGatekind());	
+		
+		logicgate = createGates.createLogicGates();
+		logicgatelist[1] = logicgate;
+		logicgatelist[0].connectGatesA(logicgatelist[1]);
+		clearClickedOnes();
+	}
+
+	//Connects logically and graphically two gates Output - InputB
+	@SuppressWarnings("unchecked")
+	public void connectOIB(){
+		panel_1.connectOIB(getClickedOnes(), Color.BLACK);
+		createGates =
+				new LUI (getClickedOnes()[0].getGatekind());
+		
+		logicgate = createGates.createLogicGates();
+		logicgatelist[0] = logicgate;
+
+		createGates =
+				new LUI (getClickedOnes()[1].getGatekind());
+		logicgate = createGates.createLogicGates();
+		logicgatelist[1] = logicgate;
+
+		logicgatelist[0].connectGatesB(logicgatelist[1]);
+		clearClickedOnes();
+	}
+
+	// Sets the  two last clicked gates
+	public void setClickedOne(MyLabel label){	
+
+		if(clickedOnes[0] == null){
+			clickedOnes[0] = label;	
+			System.out.println(true);
+		}else if (clickedOnes[1] == null && clickedOnes[0] != null){
+			clickedOnes[1] = label;			
+		}else{
+			clickedOnes[0].setIfClicked(false);
+			clickedOnes[0] = clickedOnes[1];
+			clickedOnes[1] = label;
+		}
+
+	}	
+
+	//Gets the two last clicked gates as a list.
+	public MyLabel[] getClickedOnes(){
+		return this.clickedOnes;
+	}
+
+	//Clears the list of clicked gates.
+	public void clearClickedOnes(){
+		clickedOnes[0] = null;
+		clickedOnes[1] = null;
+	}
+	
+	//creates the gate logically and graphically
+	public void createGate(){
+		drawGate = new DrawGate(220,110,100,
+				(String) list.getSelectedValue(),panel_1, 
+				labelList,frame);	
+		gatelist[J] = drawGate ;
+
+		createGates =
+				new LUI ((String)list.getSelectedValue());
+
+		logicgate = createGates.createLogicGates();
+
+		try {
+			drawGate.paint();
+			check();
+		} catch (IOException pe) {
+			pe.printStackTrace();
+		}	
+	}
+
 }

@@ -8,6 +8,7 @@ import javax.swing.ListModel;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
+@SuppressWarnings({ "serial", "rawtypes" })
 public class MyListModel extends AbstractListModel {
     public static interface Filter {
         boolean accept(Object element);

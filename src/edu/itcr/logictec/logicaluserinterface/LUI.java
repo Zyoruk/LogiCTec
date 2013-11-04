@@ -17,7 +17,9 @@ import edu.itcr.logictec.logicgates.Xor;
 public class LUI {
 	
 	private String _gateKind;
+	@SuppressWarnings("rawtypes")
 	private LogicGate[] myLogicGateList;
+	@SuppressWarnings("rawtypes")
 	private LogicGate[] myTemporalLogicGateList;
 	private int i ;
 	
@@ -94,6 +96,7 @@ public class LUI {
 		}
 	}
 	
+	@SuppressWarnings("rawtypes")
 	private LogicGate[] buildTemporalList(){
 		for (int i = 0; i<this.myLogicGateList.length;i++){
 			this.myTemporalLogicGateList[i] = this.myLogicGateList[i];

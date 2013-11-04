@@ -5,26 +5,14 @@ package edu.itcr.logictec.graphicaluserinterface;
  * It creates a MyLabel.
  */
 
-import java.awt.Color;
 import java.awt.Component;
-import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JComponent;
 import javax.swing.JTextField;
 import edu.itcr.logictec.constants.Constants;
-import edu.itcr.logictec.logicgates.And;
-import edu.itcr.logictec.logicgates.LogicGate;
-import edu.itcr.logictec.logicgates.Nand;
-import edu.itcr.logictec.logicgates.Nor;
-import edu.itcr.logictec.logicgates.Not;
-import edu.itcr.logictec.logicgates.Or;
-import edu.itcr.logictec.logicgates.Xnor;
-import edu.itcr.logictec.logicgates.Xor;
 
 public class DrawGate{
 	private int _x;
@@ -33,30 +21,29 @@ public class DrawGate{
 	private String _gateKind;
 	private MyPanel panel_1;
 	private int i = 0;
-	private MyLabel[] clickedOnes;
 	private Component[] components ;
 	private MyLabel[] labelList;
 	private JTextField input1;
 	private JTextField input2;
 	private JTextField output;
+	private GUI theGUI;
 
 	public DrawGate(){
 		components = new Component[10];
-		clickedOnes = new MyLabel[2];
 	}
 	
-	public DrawGate(int px,int py,int ph,String ptc,MyPanel pPanel_1, MyLabel[] pLabelList){
-		this._x = px;
-		this._y = py;
-		this._height = ph;
-		this._gateKind = ptc;
-		this.panel_1 = pPanel_1;	
+	public DrawGate(int px,int py,int ph,String ptc,MyPanel pPanel_1, MyLabel[] pLabelList, GUI pGUI){
+		_x = px;
+		_y = py;
+		_height = ph;
+		_gateKind = ptc;
+		panel_1 = pPanel_1;	
 		components = new Component[10];
-		this.labelList = pLabelList;
-		clickedOnes = new MyLabel[2];
+		labelList = pLabelList;
 		input1 = new JTextField();
 		input2 = new JTextField();
 		output = new JTextField();
+		theGUI = pGUI;
 	}
 
 	/**
@@ -89,9 +76,7 @@ public class DrawGate{
 			image = ImageIO.read(new File(Constants.notImage));
 		}
 
-		MyLabel picLabel = new MyLabel(new ImageIcon(image), panel_1, _gateKind);
-		labelList[i] = picLabel;
-		i++;			
+		MyLabel picLabel = new MyLabel(new ImageIcon(image), panel_1, _gateKind, theGUI);
 		
 		/*
 		 * We create 3 textfields for every new gate.
@@ -122,8 +107,7 @@ public class DrawGate{
 			}
 		}
 		
-		return picLabel;
-		
+		return picLabel;		
 	}
 	
 	/**

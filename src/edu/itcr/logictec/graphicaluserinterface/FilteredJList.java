@@ -1,18 +1,15 @@
 package edu.itcr.logictec.graphicaluserinterface;
 
-import java.awt.BorderLayout;
 import java.util.ArrayList;
 
 import javax.swing.AbstractListModel;
-import javax.swing.JFrame;
 import javax.swing.JList;
-import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListModel;
-import javax.swing.ScrollPaneConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+@SuppressWarnings({ "serial", "rawtypes" })
 public class FilteredJList extends JList {
     private FilterField filterField;
     private int DEFAULT_FIELD_WIDTH = 10;
@@ -23,7 +20,8 @@ public class FilteredJList extends JList {
         filterField = new FilterField (DEFAULT_FIELD_WIDTH);
     }
 
-    public void setModel (ListModel m) {
+    @SuppressWarnings("unchecked")
+	public void setModel (ListModel m) {
         if (! (m instanceof FilterModel))
             throw new IllegalArgumentException();
         super.setModel(m);
@@ -54,12 +52,14 @@ public class FilteredJList extends JList {
         public int getSize() {
             return filterItems.size();
         }
+		@SuppressWarnings("unchecked")
 		public void addElement (Object o) {
          items.add (o);
          refilter();
 
      }
-		   private void refilter() {
+		   @SuppressWarnings("unchecked")
+		private void refilter() {
 		       filterItems.clear();
 		       String term = getFilterField().getText();
 		       for (int i=0; i<items.size(); i++)

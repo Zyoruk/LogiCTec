@@ -12,11 +12,12 @@ import java.awt.event.MouseMotionListener;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
+@SuppressWarnings("serial")
 public class MyLabel extends JLabel implements MouseMotionListener, MouseListener {
 	
 	private boolean amIClicked;
-	private MyPanel panel_1;
 	private String gatekind;
+	private GUI theGUI;
 	
 	public MyLabel(){
 		super();
@@ -24,21 +25,21 @@ public class MyLabel extends JLabel implements MouseMotionListener, MouseListene
 		addMouseListener(this);
 	}
 	
-	public MyLabel(int px , int py , int pheight, MyPanel pPanel_1){
+	public MyLabel(int px , int py , int pheight, MyPanel pPanel_1,GUI ptheGUI){
 		super.setBounds(px, py, pheight, pheight);
+		amIClicked = false;
+		theGUI = ptheGUI;
 		addMouseMotionListener(this);
 		addMouseListener(this);
-		amIClicked = false;
-		panel_1 = pPanel_1;
 	}
 
-	public MyLabel(ImageIcon pimageIcon, MyPanel pPanel_1, String pGateKind) {
+	public MyLabel(ImageIcon pimageIcon, MyPanel pPanel_1, String pGateKind, GUI ptheGUI) {
 		super(pimageIcon);
+		amIClicked = false;
+		gatekind = pGateKind;
+		theGUI = ptheGUI;
 		addMouseMotionListener(this);
 		addMouseListener(this);
-		amIClicked = false;
-		panel_1 = pPanel_1;
-		gatekind = pGateKind;
 	}
 	
 	@Override
@@ -74,7 +75,7 @@ public class MyLabel extends JLabel implements MouseMotionListener, MouseListene
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		amIClicked = true;
-		panel_1.setClickedOne(this);
+		theGUI.setClickedOne(this);
 	}
 
 	@Override
