@@ -21,6 +21,8 @@ import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import edu.itcr.logictec.constants.Constants;
+
 public class Toxml {
 	int exits;
 	
@@ -62,7 +64,7 @@ public class Toxml {
 	        TransformerFactory transformerFactory = TransformerFactory.newInstance();
 	        Transformer transformer = transformerFactory.newTransformer();
 	        DOMSource source = new DOMSource(doc);
-	        StreamResult result = new StreamResult(new File("NewComponent.xml"));
+	        StreamResult result = new StreamResult(new File(Constants.fileXML));
 	        //System.out.println(source);
 
 	        transformer.transform(source, result);

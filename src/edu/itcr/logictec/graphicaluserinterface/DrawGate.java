@@ -131,9 +131,9 @@ public class DrawGate{
 	public void reDo(){
 		if (i < components.length){
 			if (components[i] !=null){
-			panel_1.add(components[i]);
-			panel_1.repaint();
-			i++;
+				panel_1.add(components[i]);
+				panel_1.repaint();
+				i++;
 			}
 		}
 	}
@@ -189,7 +189,7 @@ public class DrawGate{
 	}
 	
 	/**
-	 * sets the  value ofr the output of the gate
+	 * sets the  value for the output of the gate
 	 * @param pOut
 	 */
 	public void setOut(String pOut){

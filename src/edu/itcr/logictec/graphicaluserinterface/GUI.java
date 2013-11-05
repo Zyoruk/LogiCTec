@@ -28,6 +28,7 @@ import javax.swing.JLabel;
 import edu.itcr.logictec.constants.Constants;
 import edu.itcr.logictec.logicaluserinterface.LUI;
 import edu.itcr.logictec.logicgates.LogicGate;
+import edu.itcr.logictec.save.Toxml;
 
 import java.awt.Color;
 import java.io.IOException;
@@ -63,10 +64,12 @@ public class GUI extends JFrame {
 	
 	//variables for logical part
 	@SuppressWarnings("rawtypes")
+	private LogicGate[] lgClickedOnes;
+	@SuppressWarnings("rawtypes")
 	private LogicGate[] logicgatelist;
 	private LUI createGates;
-	@SuppressWarnings("rawtypes")
 	private LogicGate logicgate;
+
 
 	private static GUI frame;
 
@@ -96,8 +99,9 @@ public class GUI extends JFrame {
 	public GUI() throws IOException {
 		// we are gonna use these objects
 		drawGate = new DrawGate();
-		logicgatelist = new LogicGate[2]; 
+		lgClickedOnes = new LogicGate[2]; 
 		gatelist = new DrawGate[10];
+		logicgatelist = new LogicGate[10];
 		clickedOnes = new MyLabel[2];
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);		
@@ -130,7 +134,7 @@ public class GUI extends JFrame {
 		JButton btnSave = new JButton("Save");
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.print("Esto tiene que guardar en un XML");
+				save();
 			}
 		});
 
@@ -158,7 +162,7 @@ public class GUI extends JFrame {
 		btnUndo1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				drawGate.unDo();
-				createGates.undo();
+				J = createGates.undo(logicgatelist, J);
 			}
 		});
 		menuBar.add(btnUndo1);
@@ -168,7 +172,7 @@ public class GUI extends JFrame {
 		btnRedo1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				drawGate.reDo();
-				createGates.redo();
+				J = createGates.redo(logicgatelist, J);
 			}
 		});
 		menuBar.add(btnRedo1);
@@ -293,25 +297,24 @@ public class GUI extends JFrame {
 	//Checks the entries of the gates and set the exit.
 	@SuppressWarnings("unchecked")
 	public void check(){
+		
 		for(int i = 0 ;i < gatelist.length; i ++){
+			System.out.println(gatelist[i]);
 			if (gatelist[i] == null){
 				break;
 			}
-			if(gatelist[i].getGateKind()!= "NOT"){
-				gatelist[i].setInA(Integer.toString(gatelist[i].getInA()));
-				gatelist[i].setInB(Integer.toString(gatelist[i].getInB()));
-				logicgate.setInA(gatelist[i].getInA());
-				logicgate.setInB(gatelist[i].getInB());
+			if(gatelist[i].getGateKind()!= "NOT"){				
+				logicgatelist[i].setInA(gatelist[i].getInA());
+				logicgatelist[i].setInB(gatelist[i].getInB());
+				
 				gatelist[i].setOut(Integer.toString(
-						(int)logicgate.getExit()));
-			}else{
-				gatelist[i].setInA(Integer.toString(gatelist[i].getInA()));
-				gatelist[i].setInB(Integer.toString(gatelist[i].getInB()));
-				logicgate.setInA(gatelist[i].getInB());
-				logicgate.setInB(gatelist[i].getInB());
+						(int)logicgatelist[i].getExit()));
+			}else{				
+				logicgatelist[i].setInA(gatelist[i].getInB());
+				logicgatelist[i].setInB(gatelist[i].getInB());
 				gatelist[i].setOut(Integer.toString(
-						(int)logicgate.getExit()));
-				repaint();
+						(int)logicgatelist[i].getExit()));
+
 			}
 		}
 	}
@@ -324,15 +327,15 @@ public class GUI extends JFrame {
 		createGates =
 				new LUI (getClickedOnes()[0].getGatekind());
 		
-		logicgate = createGates.createLogicGates();
-		logicgatelist[0] = logicgate;
+		logicgate = createGates.createLogicGates(logicgatelist, J);
+		lgClickedOnes[0] = logicgate;
 		
 		createGates =
 				new LUI (getClickedOnes()[1].getGatekind());	
 		
-		logicgate = createGates.createLogicGates();
-		logicgatelist[1] = logicgate;
-		logicgatelist[0].connectGatesA(logicgatelist[1]);
+		logicgate = createGates.createLogicGates(logicgatelist, J);
+		lgClickedOnes[1] = logicgate;
+		lgClickedOnes[0].connectGatesA(lgClickedOnes[1]);
 		clearClickedOnes();
 	}
 
@@ -343,15 +346,15 @@ public class GUI extends JFrame {
 		createGates =
 				new LUI (getClickedOnes()[0].getGatekind());
 		
-		logicgate = createGates.createLogicGates();
-		logicgatelist[0] = logicgate;
+		logicgate = createGates.createLogicGates(logicgatelist, J);
+		lgClickedOnes[0] = logicgate;
 
 		createGates =
 				new LUI (getClickedOnes()[1].getGatekind());
-		logicgate = createGates.createLogicGates();
-		logicgatelist[1] = logicgate;
+		logicgate = createGates.createLogicGates(logicgatelist, J);
+		lgClickedOnes[1] = logicgate;
 
-		logicgatelist[0].connectGatesB(logicgatelist[1]);
+		lgClickedOnes[0].connectGatesB(lgClickedOnes[1]);
 		clearClickedOnes();
 	}
 
@@ -392,7 +395,8 @@ public class GUI extends JFrame {
 		createGates =
 				new LUI ((String)list.getSelectedValue());
 
-		logicgate = createGates.createLogicGates();
+		logicgate = createGates.createLogicGates(logicgatelist, J);
+		logicgatelist[J] = logicgate;
 
 		try {
 			drawGate.paint();
@@ -402,4 +406,16 @@ public class GUI extends JFrame {
 		}	
 	}
 
+	public void save(){
+		Toxml xml = new Toxml();
+		for (int i = 0; i<logicgatelist.length;i++){
+			if (logicgatelist[i] != null){
+				try {
+					xml.save(logicgatelist[i].printGate());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
 }

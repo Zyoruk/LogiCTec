@@ -18,88 +18,76 @@ public class LUI {
 	
 	private String _gateKind;
 	@SuppressWarnings("rawtypes")
-	private LogicGate[] myLogicGateList;
-	@SuppressWarnings("rawtypes")
 	private LogicGate[] myTemporalLogicGateList;
-	private int i ;
 	
 	/**
 	 * @param args
 	 */
 	public LUI(String pLG){
 		_gateKind = pLG;
-		myLogicGateList = new LogicGate[10];
 		myTemporalLogicGateList = new LogicGate[10];
-		i = 0 ;
 	}
 	
-	public LogicGate<Integer> createLogicGates(){
+	public LogicGate<Integer> createLogicGates(LogicGate<Integer>[] pArray, int J){
 		
 		if (_gateKind == "AND"){
 			LogicGate<Integer> AND = new And();
-			myLogicGateList [i] = AND;
-			i++;
+			pArray[J] = AND;
 			return AND;
 			
 		}else if (_gateKind == "NAND"){
 			LogicGate<Integer> NAND = new Nand();
-			myLogicGateList [i] = NAND;
-			i++;
+			pArray[J] = NAND;
 			return NAND;
 			
 		}else if (_gateKind == "XOR"){
 			LogicGate<Integer> XOR = new Xor();
-			myLogicGateList [i] = XOR;
-			i++;
+			pArray[J]  = XOR;
 			return XOR;
 			
 		}else if (_gateKind == "XNOR"){
 			LogicGate<Integer> XNOR = new Xnor();
-			myLogicGateList [i] = XNOR;
-			i++;
+			pArray[J]  = XNOR;
 			return XNOR;
 			
 		}else if (_gateKind == "OR"){
 			LogicGate<Integer> OR = new Or();
-			myLogicGateList [i] = OR;
-			i++;
+			pArray[J]  = OR;
 			return OR;
 			
 		}else if (_gateKind == "NOR"){
 			LogicGate<Integer> NOR = new Nor();
-			myLogicGateList [i] = NOR;
-			i++;
+			pArray[J]  = NOR;
 			return NOR;
 			
 		}else{
 			LogicGate<Integer> NOT = new Not();
-			myLogicGateList [i] = NOT;
-			i++;
+			pArray[J] = NOT;
 			return NOT;			
 		}
 	}
 	
-	public void undo(){
-		if (this.myLogicGateList.length!=0){		
-			this.myLogicGateList[i] = null;
-			if(i != 0){
-				i--;
-			}
+	public int undo(LogicGate<Integer>[] pArray, int J){
+		if (pArray[0] != null){		
+			pArray[J] = null;
+			J--;
 		}
+		return J;
 	}
 	
-	public void redo(){
-		this.myTemporalLogicGateList = buildTemporalList();
-		if (i < this.myLogicGateList.length){
-			this.myLogicGateList[i] = this.myTemporalLogicGateList[i];
-			i++;
+	public int redo(LogicGate<Integer>[] pArray, int J){
+		this.myTemporalLogicGateList = buildTemporalList(pArray);
+		if (J < pArray.length){
+			pArray[J] = this.myTemporalLogicGateList[J];
+			J++;
 		}
+		return J;
 	}
 	
 	@SuppressWarnings("rawtypes")
-	private LogicGate[] buildTemporalList(){
-		for (int i = 0; i<this.myLogicGateList.length;i++){
-			this.myTemporalLogicGateList[i] = this.myLogicGateList[i];
+	private LogicGate[] buildTemporalList(LogicGate[] pArray){
+		for (int i = 0; i<pArray.length;i++){
+			this.myTemporalLogicGateList[i] = pArray[i];
 		}		
 		return this.myTemporalLogicGateList;
 	}

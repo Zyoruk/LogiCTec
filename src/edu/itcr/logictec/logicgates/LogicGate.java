@@ -93,6 +93,7 @@ public class LogicGate<K>{
 			array[i] = (Integer) list.getRootData();
 			list.delete();
 		}
+		list.clear();
 		return array;
 	}
 	

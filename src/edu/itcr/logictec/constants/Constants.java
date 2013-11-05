@@ -35,4 +35,6 @@ public class Constants {
 	
 	public static final String xorImage = "imagenescompuertas/xor.png";
 	
+	public static final String fileXML = "NewComponent.xml";
+	
 }
